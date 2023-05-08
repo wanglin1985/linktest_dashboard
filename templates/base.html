@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css', _external=True) }}">
+    {% block head %}
+    <title>EFLabs TestCase Execution Logs Dashboard</title>
+
+    <style type="text/css">
+        a:link, a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .table_head_column {
+            font-size: medium;
+            background-color: whitesmoke;
+        }
+
+        .tooltip.top .tooltip-inner {
+            /*background-color: #428bca;*/
+            background-color: #f09518;
+        }
+        .tooltip.top .tooltip-arrow {
+            /*border-top-color: #268028;*/
+            border-top-color: #f09518;
+        }
+        
+        /*.exp_body {*/
+            /*background: url("http://static.blog.csdn.net/static/images/export_bg.jpg");*/
+        /*}*/
+
+        /*div { background: url("http://static.blog.csdn.net/static/images/export_bg.jpg") repeat; }*/
+
+
+        /*table { background: url("http://static.blog.csdn.net/static/images/export_bg.jpg") repeat; }*/
+
+
+    </style>
+    {% endblock %}
+
+    {% block css %}
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='jquery.1.10.2.min.js', _external=True) }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js', _external=True) }}"></script>
+    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<!--    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>-->
+    <script src="{{ url_for('static', filename='highcharts-3d.js', _external=True) }}"></script>
+    <script src="{{ url_for('static', filename='highcharts.js', _external=True) }}"></script>
+    <script src="{{ url_for('static', filename='clipboard.min.js', _external=True) }}"></script>
+<!--    <script type="text/javascript" src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>-->
+
+</head>
+
+<body class="exp_body">
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div align="center">
+            <a href="{{url_for('home')}}">
+                <img class="ikea_png" style="width:150px;height:56px" align="left" src="{{url_for('static', filename='img/ikea.png')}}"/>
+            </a>
+            <!--<span class="text-left" style="font-size: 40px">QA Automation Test Dashboard</span>-->
+            <!--<a href="{{ url_for('home') }}" title="Go to Home Page">-->
+                <!--<h3 style="color: #666">EF Labs Automation Test Execution Logs Dashboard</h3>-->
+            <!--</a>-->
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-left" role="search" style="margin-top:18px;">
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" placeholder="Global Search" >
+                    <span class="input-group-btn">
+                        <a class="btn btn-default" href="search_result.html"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</a>
+                    </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="curlink" href="{{ url_for('home') }}"><span class="glyphicon glyphicon-home"></span>&nbsp;</a>
+                </li>
+                <li>
+                    <a class="curlink" href="{{ url_for('login') }}" id="login"}><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+                </li>
+
+                <li>
+                    <a class="curlink" href="{{ url_for('register') }}" id="register"><span class="glyphicon glyphicon-plus"></span>&nbsp;Register</a>
+                </li>
+
+                <li>
+                    <!--<a><span class="glyphicon glyphicon-user" id="welcome_user"></span>&nbsp;</a>-->
+                    <a><span id="welcome_user"></span></a>
+                </li>
+
+                <li>
+                    <a class="curlink hide" href="{{ url_for('logout') }}" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
+                </li>
+                <li>
+                    <a class="curlink" href="{{ url_for('user') }}" id="user"><span class="glyphicon glyphicon-user"></span>&nbsp;User</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        {% block summary %}
+        {% endblock %}
+    </div>
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+</body>
+
+<script>
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+
+</script>
+
+{% if "user" in session%}
+<script>
+   $(function () {
+       $("#login").addClass("hide");
+       $("#register").addClass("hide");
+       $("#logout").removeClass("hide");
+//       $("#user").addClass("hide");
+       $("#welcome_user").html("<span style='color:#428bca'> Welcome: {{session['user']}}</span>");
+   })
+</script>
+{% endif %}
+
+{% block extrajs %}
+
+{% endblock %}
+</html>

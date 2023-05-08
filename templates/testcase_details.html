@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>TestCase Execution Logs Dashboard Detail Page</title>
+{% endblock %}
+
+{% block content %}
+<div>
+    <ol class="breadcrumb" style="font-size: medium">
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('admin', projectname=project_name) }}">{{testcase.project_name}}</a></li>
+      <li><a href="{{ url_for('execution_id_summary', execution_id=execution_id) }}">{{execution_id}}</a></li>
+      <li class="active" style="word-break: break-all;">{{testcase.testcase_full_path}}</li>
+    </ol>
+</div>
+
+<div style="margin: 0 auto">
+    <div class="panel panel-default">
+        <div class="panel-heading">Project Name  | (Click to see the execution <font color="#daa520"><b>histories</b></font> of this project)</div>
+        <div class="panel-body">
+            <a href="{{url_for('admin', projectname=project_name)}}">{{testcase.project_name}}</a>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">TestCase Full Path  | (Click to see the execution <font color="#daa520"><b>histories</b></font> of this testcase)</div>
+        <div class="panel-body">
+            <a href="{{url_for('history', id=id )}}" style="word-break: break-all;">{{testcase.testcase_full_path}}</a>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Execution ID | (Click to see the summary/details of this execution_id)</div>
+        <div class="panel-body">
+            <a href="{{url_for('execution_id_summary', execution_id=execution_id )}}">{{testcase.execution_id}}</a>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Status</div>
+        <div class="panel-body">
+            {% if testcase.status.lower() == "fail" %}
+                <span style="color:#DC3912" name="status_val">Failed</span>
+            {% else %}
+                <span style="color:green" name="status_val">Passed</span>
+            {% endif %}
+
+        </div>
+    </div>
+
+     <div class="panel panel-default">
+        <div class="panel-heading">TestCase Start Time</div>
+        <div class="panel-body">
+            {{testcase.testcase_start_time}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">TestCase Execution Duration (seconds)</div>
+        <div class="panel-body">
+            {{testcase.execution_time}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Rerun Flag</div>
+        <div class="panel-body">
+            {{testcase.rerun_flag}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Tags</div>
+        <div class="panel-body">
+            {{testcase.tags}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Jenkins Job Name</div>
+        <div class="panel-body">
+            {{testcase.jenkins_job_name}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">TestCase ID</div>
+        <div class="panel-body">
+            {{testcase.tc_id}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Execution Host</div>
+        <div class="panel-body">
+            {{client}}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Execution Log
+        </div>
+        <pre style="margin:0; background-color: transparent">{{testcase.execution_log}}</pre>
+    </div>
+
+    {% if testcase.status == 'fail'%}
+    <div class="panel panel-default">
+        <div class="panel-heading" style="color: #DC3912">Error Info</div>
+        <pre class="panel-body" style="color: #DC3912; margin:0; background-color: transparent">{{testcase.error_info}}</pre>
+    </div>
+    {% for screenshot in screenshot_list%}
+    <div class="panel panel-default">
+        <div class="panel-heading" style="color: #DC3912">{{screenshot}}</div>
+        <img class="screenshot" style="width: 950px" align="center" src="{{screenshot}}"/>
+    </div>
+    {% endfor %}
+
+
+<!--    <div class="col-md-9">-->
+<!--        <div class="panel panel-warning">-->
+<!--            <div class="panel-heading">-->
+<!--                <h3 class="panel-title"><span class="glyphicon glyphicon-edit"></span>&nbsp;Analysis</h3>-->
+<!--            </div>-->
+<!--            <div class="panel-body">-->
+<!--                <form role="form">-->
+<!--                    <fieldset>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="set_passed"><span class="glyphicon"></span>&nbsp;Set Passed</label>-->
+<!--                            <input id="input_name" class="form-control" placeholder="set_passed" name="set_passed"-->
+<!--                                   type="text" value="set_passed">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-12" id="error_name"></div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="jira_bug"><span class="glyphicon"></span>&nbsp;JIRA BUG</label>-->
+<!--                            <input id="jira_bug" class="form-control" placeholder="jira_bug" name="jira_bug"-->
+<!--                                   value="jira_bug_id">-->
+<!--                        </div>-->
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="input_info"><span class="glyphicon"></span>&nbsp;Description</label>-->
+<!--                            <textarea class="form-control" rows="10" id="input_info">input the reason/description!</textarea>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-12" id="error_info"></div>-->
+<!--                        <a href="user.html" class="btn btn-success"><span class="glyphicon glyphicon-saved"></span>&nbsp;Update</a>-->
+<!--                    </fieldset>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+    {% endif%}
+</div>
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}

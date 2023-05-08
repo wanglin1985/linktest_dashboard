@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'menu.html' %}
+<div class="col-md-9">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;User Info</h3>
+        </div>
+        <div class="panel-body">
+            <form role="form">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="input_name"><span class="glyphicon glyphicon-user"></span>&nbsp;Name</label>
+                        <input id="input_name" class="form-control" placeholder="name" name="name" type="text" autofocus
+                               value="Lin">
+                    </div>
+                    <div class="col-md-12" id="error_name"></div>
+                    <div class="form-group">
+                        <label for="input_email"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Email</label>
+                        <input id="input_email" class="form-control" placeholder="email" name="email" type="email"
+                               autofocus value="lin.wang15@ingka.ikea.com">
+                    </div>
+                    <div class="col-md-12" id="error_email"></div>
+                    <div class="form-group">
+                        <label for="input_phone"><span class="glyphicon glyphicon-phone"></span>&nbsp;Phone</label>
+                        <input id="input_phone" class="form-control" placeholder="phone" name="phone" type="text" autofocus
+                               value="15900735189">
+                    </div>
+                    <div class="col-md-12" id="error_phone"></div>
+                    <div class="form-group">
+                        <label for="input_face"><span class="glyphicon glyphicon-picture"></span>&nbsp;Face Pic</label>
+                        <img src="holder.js/100x100" class="img-responsive img-rounded">
+                        <a class="btn btn-primary" style="margin-top:6px;"><span
+                                class="glyphicon glyphicon-open"></span>&nbsp;upload pic</a>
+                        <input id="input_face" class="form-control" name="face" type="hidden" autofocus>
+                    </div>
+
+                    <div>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <p>文件上传</p>
+                            <p><input type="file" name="file"></p>
+                            <p><input type="submit" value="submit"></p>
+                        </form>
+                    </div>
+                    <div class="col-md-12" id="error_face"></div>
+                    <div class="form-group">
+                        <label for="input_info"><span class="glyphicon glyphicon-edit"></span>&nbsp;Description</label>
+                        <textarea class="form-control" rows="10" id="input_info">未来不阻挡任何人的脚步!</textarea>
+                    </div>
+                    <div class="col-md-12" id="error_info"></div>
+                    <a href="user.html" class="btn btn-success"><span class="glyphicon glyphicon-saved"></span>&nbsp;Save</a>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block extrajs %}
+<script>
+    $(document).ready(function () {
+        $('#m-1').addClass("active");
+    });
+</script>
+{% endblock %}

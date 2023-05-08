@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>404 Page</title>
+    <link href="{{ url_for('static', filename='404/404.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="fullScreen" id="fullScreen">
+    <img class="rotating" src="{{ url_for('static', filename='404/spaceman.svg') }}">
+    <div class="pagenotfound-text">
+        <h1>Oops!!! You Are Lost . . . </h1>
+        <h2><a href="{{ url_for('home') }}" style="color:#f5df20">Back to Home</a></h2>
+        <h5><a href="{{ url_for('home') }}" style="color:whitesmoke">For any questions please contact lin.wang15@ingka.ikea.com</a></h5>
+
+    </div>
+    <canvas id="canvas2d"></canvas>
+</div>
+<script type="text/javascript" src="{{ url_for('static', filename='404/404.js') }}"></script>
+
+</body>
+</html>

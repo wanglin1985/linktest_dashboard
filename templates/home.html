@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block summary %}
+{% endblock %}
+
+{% block content %}
+<H3>Latest Executions Summary:</H3>
+<hr>
+<div id='latest_execution_chart_container' ></div>
+
+
+<H3>Latest Executions:</H3>
+<hr>
+<div class="panel panel-default">
+    <table class="table table-hover" border="0">
+        <tr>
+            <th class="text-left table_head_column" width="24%">Jenkins Job Name</th>
+            <th class="text-left table_head_column" width="18%">Latest Execution ID</th>
+            <th class="text-left table_head_column" width="10%">Environment</th>
+            <th class="text-left table_head_column" width="12%">Total TestCases</th>
+            <th class="text-center table_head_column" width="9%">Pass Rate</th>
+            <th class="text-center table_head_column" width="15%">Duration</th>
+            <th class="text-left table_head_column" width="12%">Execution Host</th>
+        </tr>
+        {% if row_count>0 %}
+        {% for pname in project_latest_execid_dict.keys() %}
+        <tr>
+            <td>
+                <!--<div class="panel-body">-->
+                    <a href="{{url_for('admin', projectname=pname)}}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Click to see this project's execution histories"
+                       style="display:block; word-break: break-all">
+                        {{pname}}
+                    </a>
+                <!--</div>-->
+            </td>
+
+            <td align="center">
+                <a href="{{url_for('execution_id_summary', execution_id=project_latest_execid_dict[pname].execution_id)}}"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Click to see this execution's detail"
+                   style="display:block; word-break: break-all">
+                    {{project_latest_execid_dict[pname].execution_id}}
+                </a>
+            </td>
+
+            <td align="center">
+                {{project_latest_execid_dict[pname].environment}}
+            </td>
+
+            <td align="center">
+                {{project_latest_execid_dict[pname].total_testcases_count}}
+            </td>
+
+            {% set pass_rate = "%.0f" % (project_latest_execid_dict[pname].pass_testcases_count /
+            project_latest_execid_dict[pname].total_testcases_count * 100) %}
+            {% if pass_rate | int >= 90 %}
+            <td align="center">
+                <a style="color: green"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Passed:{{project_latest_execid_dict[pname].pass_testcases_count}} / Failed:{{project_latest_execid_dict[pname].fail_testcases_count}}">
+                    {{ pass_rate }}%
+                </a>
+            </td>
+            {% else %}
+            {% if pass_rate | int >=60 %}
+            <td align="center">
+                <a style="color: #b8a115"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Passed:{{project_latest_execid_dict[pname].pass_testcases_count}} / Failed:{{project_latest_execid_dict[pname].fail_testcases_count}}">
+                    {{ pass_rate }}%
+                </a>
+            </td>
+            {% else %}
+            <td align="center">
+                <a style="color: #DC3912"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Passed:{{project_latest_execid_dict[pname].pass_testcases_count}} / Failed:{{project_latest_execid_dict[pname].fail_testcases_count}}">
+                    {{ pass_rate }}%
+                </a>
+            </td>
+            {% endif %}
+            {% endif %}
+
+            <td align="center">
+                {{project_latest_execid_dict[pname].total_execution_time}}
+            </td>
+
+            {% if project_latest_execid_dict[pname].client %}
+            <td align="center">
+                {{project_latest_execid_dict[pname].client}}
+            </td>
+            {% else %}
+            <td align="center">
+                -
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+{% endblock %}
+</div>
+
+{% block extrajs %}
+<script>
+    $(function () {
+        $('#latest_execution_chart_container').highcharts({
+            chart: {
+                type: 'column',
+//                plotBackgroundImage: 'http://static.blog.csdn.net/static/images/export_bg.jpg'
+            },
+            credits: {
+                enabled: false
+            },
+            colors:[
+                '#3978cc',
+                '#DC3912'
+              ],
+            title: {
+                text: 'All Jenkins Job\'s Latest Executions Pass/Fail Rate'
+            },
+            xAxis: {
+                categories: [{{project_list_for_highcharts}}]
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Pass/Fail Rate'
+                }
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'percent',
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                series: {
+                    borderRadius: 3
+                }
+            },
+            series: [{
+                name: 'Passed',
+                data: [{{passed_count_list}}]
+            }, {
+                name: 'Failed',
+                data: [{{failed_count_list}}]
+            }]
+        });
+    });
+</script>
+
+{% endblock %}
